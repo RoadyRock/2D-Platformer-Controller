@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = ("Character Physics"))]
 public class CharacterPhysics : ScriptableObject
 {
 	[Header("Player Ground Physics")]
