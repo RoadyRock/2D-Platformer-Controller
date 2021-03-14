@@ -8,7 +8,10 @@ public class Player : MonoBehaviour
 
 	[SerializeField] CharacterPhysics playerPhysics;
 
+	float smoothDampX;
+
 	Vector2 moveDir;
+	Vector2 currentVelocity;
 
 	Rigidbody2D rb;
 
@@ -19,13 +22,32 @@ public class Player : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		float targetvelocity = moveDir.x * playerPhysics.MaxSpeed;
-		rb.velocity = new Vector2(targetvelocity, rb.velocity.y);
+		currentVelocity = rb.velocity;
+
+		MovePlayer();
+
+		rb.velocity = currentVelocity;
+	}
+
+	void MovePlayer()
+	{
+		if (moveDir.x != 0)
+		{
+			currentVelocity.x += playerPhysics.Acceleration * Time.fixedDeltaTime * moveDir.x;
+			if (Mathf.Abs(currentVelocity.x) > playerPhysics.MaxSpeed)
+			{
+				currentVelocity.x = playerPhysics.MaxSpeed * moveDir.x;
+			}
+		}
+		else
+		{
+			currentVelocity.x = Mathf.SmoothDamp(currentVelocity.x, 0f, ref smoothDampX, playerPhysics.TimeToStop, playerPhysics.MaxSpeed);
+		}
+
 	}
 
 	public void OnMove(InputAction.CallbackContext context)
 	{
-		Debug.Log("is moving");
 		moveDir = context.ReadValue<Vector2>();
 	}
 
@@ -33,13 +55,11 @@ public class Player : MonoBehaviour
 	{
 		if (context.started)
 		{
-			Debug.Log("is jumping");
 			rb.gravityScale = 1f;
 			rb.velocity = new Vector2(rb.velocity.x, playerPhysics.MinJumpVelocity);
 		}
 		else if (context.canceled)
 		{
-			Debug.Log("stopped jumping");
 			rb.gravityScale = playerPhysics.FastFallFactor;
 		}
 	}
