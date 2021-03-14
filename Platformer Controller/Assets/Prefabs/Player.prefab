@@ -47,6 +47,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPhysics: {fileID: 11400000, guid: 0fe977629041de74eb84fdf6ba24b314, type: 2}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!212 &2138461849308955837
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -143,5 +146,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5}
-  m_EdgeRadius: 0.25
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
