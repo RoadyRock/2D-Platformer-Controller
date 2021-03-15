@@ -30,9 +30,9 @@ public class Player : MonoBehaviour
 		currentVelocity = rb.velocity;
 
 		GroundCheck();
-		AcceleratePlayer();
+		Move();
 		Jump();
-		CapPlayerSpeed();
+		CapFallSpeed();
 
 		rb.velocity = currentVelocity;
 	}
@@ -42,13 +42,14 @@ public class Player : MonoBehaviour
 		isGrounded = Physics2D.OverlapBox(rb.position - Vector2.up * .001f, bc.size - Vector2.right * .01f, 0f, groundMask); // TODO: make this line readable
 	}
 
-	void AcceleratePlayer()
+	void Move()
 	{
 		if (isGrounded)
 		{
 			if (moveDir.x != 0)
 			{
-				currentVelocity.x += playerPhysics.Acceleration * Time.fixedDeltaTime * moveDir.x;
+				float targetVelocity = playerPhysics.MaxSpeed * moveDir.x;
+				currentVelocity.x = Mathf.SmoothDamp(currentVelocity.x, targetVelocity, ref smoothDampX, playerPhysics.TimeToMaxSpeed);
 			}
 			else
 			{
@@ -94,12 +95,8 @@ public class Player : MonoBehaviour
 		}
 	}
 
-	void CapPlayerSpeed()
+	void CapFallSpeed()
 	{
-		if (Mathf.Abs(currentVelocity.x) > playerPhysics.MaxSpeed)
-		{
-			currentVelocity.x = playerPhysics.MaxSpeed * moveDir.x;
-		}
 		if (rb.gravityScale > 1f)
 		{
 			if (currentVelocity.y < -playerPhysics.MaxFallSpeed)
