@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
 	float smoothDampX;
 
 	bool isGrounded;
+	bool jumpQueued;
 
 	Vector2 moveDir;
 	Vector2 currentVelocity;
@@ -29,6 +30,7 @@ public class Player : MonoBehaviour
 
 		GroundCheck();
 		MovePlayer();
+		Jump();
 
 		rb.velocity = currentVelocity;
 	}
@@ -50,9 +52,22 @@ public class Player : MonoBehaviour
 		}
 		else if (isGrounded)
 		{
-			currentVelocity.x = Mathf.SmoothDamp(currentVelocity.x, 0f, ref smoothDampX, playerPhysics.TimeToStop, playerPhysics.MaxSpeed);
+			currentVelocity.x = Mathf.SmoothDamp(currentVelocity.x, 0f, ref smoothDampX, playerPhysics.TimeToStop);
 		}
 
+	}
+
+	void Jump()
+	{
+		if (jumpQueued)
+		{
+			jumpQueued = false;
+			if (isGrounded)
+			{
+				float extraJump = (Mathf.Abs(currentVelocity.x) / playerPhysics.MaxSpeed) * playerPhysics.JumpVelocityRange;
+				currentVelocity.y = playerPhysics.MinJumpVelocity + extraJump;
+			}
+		}
 	}
 
 	public void OnMove(InputAction.CallbackContext context)
@@ -65,8 +80,7 @@ public class Player : MonoBehaviour
 		if (context.started)
 		{
 			rb.gravityScale = 1f;
-			if (isGrounded)
-				rb.velocity = new Vector2(rb.velocity.x, playerPhysics.MinJumpVelocity);
+			jumpQueued = true;
 		}
 		else if (context.canceled)
 		{

@@ -29,6 +29,7 @@ public class CharacterPhysics : ScriptableObject
 	public float Gravity => TrueMaxJumpVelocity / JumpTime;
 	public float MaxJumpVelocity => Mathf.Sqrt(2 * Gravity * runningJumpHeight) + Gravity * Time.fixedDeltaTime;
 	public float MinJumpVelocity => Mathf.Sqrt(2 * Gravity * standingJumpHeight) + Gravity * Time.fixedDeltaTime;
+	public float JumpVelocityRange => MaxJumpVelocity - MinJumpVelocity;
 	public float TimeToMaxSpeedAir => timeToReachMaxSpeedAir;
 	public float AirAcceleration => maxSpeed / timeToReachMaxSpeed;
 	public float FastFallFactor => fastFallGravityScale;
