@@ -8,9 +8,10 @@ public class Player : MonoBehaviour
 	[SerializeField] LayerMask groundMask;
 
 	float smoothDampX;
+	float jumpBuffer;
+	float coyoteTimer;
 
 	bool isGrounded;
-	bool jumpQueued;
 
 	Vector2 moveDir;
 	Vector2 currentVelocity;
@@ -29,41 +30,57 @@ public class Player : MonoBehaviour
 		currentVelocity = rb.velocity;
 
 		GroundCheck();
-		MovePlayer();
+		AcceleratePlayer();
 		Jump();
+		CapPlayerSpeed();
 
 		rb.velocity = currentVelocity;
 	}
 
 	void GroundCheck()
 	{
-		isGrounded = Physics2D.OverlapBox(rb.position - Vector2.up * .01f, bc.size - Vector2.right * .01f, 0f, groundMask); // TODO: make this line readable
+		isGrounded = Physics2D.OverlapBox(rb.position - Vector2.up * .001f, bc.size - Vector2.right * .01f, 0f, groundMask); // TODO: make this line readable
 	}
 
-	void MovePlayer()
+	void AcceleratePlayer()
 	{
-		if (moveDir.x != 0)
+		if (isGrounded)
 		{
-			currentVelocity.x += playerPhysics.Acceleration * Time.fixedDeltaTime * moveDir.x;
-			if (Mathf.Abs(currentVelocity.x) > playerPhysics.MaxSpeed)
+			if (moveDir.x != 0)
 			{
-				currentVelocity.x = playerPhysics.MaxSpeed * moveDir.x;
+				currentVelocity.x += playerPhysics.Acceleration * Time.fixedDeltaTime * moveDir.x;
+			}
+			else
+			{
+				currentVelocity.x = Mathf.SmoothDamp(currentVelocity.x, 0f, ref smoothDampX, playerPhysics.TimeToStop);
 			}
 		}
-		else if (isGrounded)
+		else
 		{
-			currentVelocity.x = Mathf.SmoothDamp(currentVelocity.x, 0f, ref smoothDampX, playerPhysics.TimeToStop);
+			if (moveDir.x != 0)
+			{
+				currentVelocity.x += playerPhysics.AirAcceleration * Time.fixedDeltaTime * moveDir.x;
+			}
 		}
-
 	}
 
 	void Jump()
 	{
-		if (jumpQueued)
+		jumpBuffer -= Time.fixedDeltaTime;
+		if (isGrounded)
 		{
-			jumpQueued = false;
-			if (isGrounded)
+			coyoteTimer = playerPhysics.CoyoteTime;
+		}
+		else
+		{
+			coyoteTimer -= Time.fixedDeltaTime;
+		}
+		if (jumpBuffer > 0f)
+		{
+			if (coyoteTimer > 0f)
 			{
+				jumpBuffer = 0f;
+				coyoteTimer = 0f;
 				float extraJump;
 				float speedPercentage = Mathf.Abs(currentVelocity.x) / playerPhysics.MaxSpeed;
 
@@ -73,6 +90,28 @@ public class Player : MonoBehaviour
 					extraJump = playerPhysics.JumpVelocityRange;
 
 				currentVelocity.y = playerPhysics.MinJumpVelocity + extraJump;
+			}
+		}
+	}
+
+	void CapPlayerSpeed()
+	{
+		if (Mathf.Abs(currentVelocity.x) > playerPhysics.MaxSpeed)
+		{
+			currentVelocity.x = playerPhysics.MaxSpeed * moveDir.x;
+		}
+		if (rb.gravityScale > 1f)
+		{
+			if (currentVelocity.y < -playerPhysics.MaxFallSpeed)
+			{
+				currentVelocity.y = -playerPhysics.MaxFallSpeed;
+			}
+		}
+		else
+		{
+			if (currentVelocity.y < -playerPhysics.MaxSlowFallSpeed)
+			{
+				currentVelocity.y = -playerPhysics.MaxSlowFallSpeed;
 			}
 		}
 	}
@@ -87,7 +126,7 @@ public class Player : MonoBehaviour
 		if (context.started)
 		{
 			rb.gravityScale = 1f;
-			jumpQueued = true;
+			jumpBuffer = playerPhysics.CoyoteTime;
 		}
 		else if (context.canceled)
 		{

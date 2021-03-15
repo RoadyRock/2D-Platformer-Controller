@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 8
   timeToReachMaxSpeed: 0.25
-  timeToStop: 0.15
+  timeToStop: 0.25
   runningJumpHeight: 5.5
   standingJumpHeight: 4.2
   runningJumpDistance: 8
+  coyoteFrames: 5
   timeToReachMaxSpeedAir: 0.25
   fastFallGravityScale: 2
   maxFallSpeed: 18

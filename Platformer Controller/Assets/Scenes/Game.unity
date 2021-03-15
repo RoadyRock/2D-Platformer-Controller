@@ -130,6 +130,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 687115921668506488, guid: ad28c2cac0879ad40a9d94bf0b7eb44b, type: 3}
+      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 161018014}
+    - target: {fileID: 687115921668506488, guid: ad28c2cac0879ad40a9d94bf0b7eb44b, type: 3}
+      propertyPath: m_ActionEvents.Array.data[1].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 161018014}
     - target: {fileID: 687115921668506489, guid: ad28c2cac0879ad40a9d94bf0b7eb44b, type: 3}
       propertyPath: m_Name
       value: Input Manager
@@ -180,6 +188,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad28c2cac0879ad40a9d94bf0b7eb44b, type: 3}
+--- !u!114 &161018014 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2138461849308955835, guid: 9b0e20724a1e8df4d9a7915267f8906c, type: 3}
+  m_PrefabInstance: {fileID: 1476166456}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc5b07d771d7c648b7d4e67a7877464, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,7 +252,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 8.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -337,11 +356,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2138461849308955836, guid: 9b0e20724a1e8df4d9a7915267f8906c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.31
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2138461849308955836, guid: 9b0e20724a1e8df4d9a7915267f8906c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.3
+      value: 1.48
       objectReference: {fileID: 0}
     - target: {fileID: 2138461849308955836, guid: 9b0e20724a1e8df4d9a7915267f8906c, type: 3}
       propertyPath: m_LocalPosition.z

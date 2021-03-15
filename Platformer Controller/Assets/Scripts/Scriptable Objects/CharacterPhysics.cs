@@ -12,6 +12,7 @@ public class CharacterPhysics : ScriptableObject
 	[SerializeField] float runningJumpHeight = 5.5f;
 	[SerializeField] float standingJumpHeight = 4.2f;
 	[SerializeField] float runningJumpDistance = 8f;
+	[SerializeField] float coyoteFrames = 5f;
 
 	[Header("Player In-Air Physics")]
 	[SerializeField] float timeToReachMaxSpeedAir = .25f;
@@ -23,17 +24,18 @@ public class CharacterPhysics : ScriptableObject
 	public float TimeToMaxSpeed => timeToReachMaxSpeed;
 	public float TimeToStop => timeToStop;
 	public float Acceleration => maxSpeed / timeToReachMaxSpeed;
-	public float Decceleraton => maxSpeed / timeToStop;
+	public float Deceleraton => maxSpeed / timeToStop;
 	public float JumpTime => (runningJumpDistance / 2f) / maxSpeed;
 	public float TrueMaxJumpVelocity => 2f * runningJumpHeight / JumpTime;
 	public float Gravity => TrueMaxJumpVelocity / JumpTime;
 	public float MaxJumpVelocity => Mathf.Sqrt(2 * Gravity * runningJumpHeight) + Gravity * Time.fixedDeltaTime;
 	public float MinJumpVelocity => Mathf.Sqrt(2 * Gravity * standingJumpHeight) + Gravity * Time.fixedDeltaTime;
 	public float JumpVelocityRange => MaxJumpVelocity - MinJumpVelocity;
+	public float CoyoteTime => coyoteFrames * Time.fixedDeltaTime;
 	public float TimeToMaxSpeedAir => timeToReachMaxSpeedAir;
 	public float AirAcceleration => maxSpeed / timeToReachMaxSpeed;
 	public float FastFallFactor => fastFallGravityScale;
-	public float MaxFallSpeed => maxFallSpeed;
-	public float MaxSlowFallSpeed => maxSlowFallSpeed;
+	public float MaxFallSpeed => maxFallSpeed + Gravity * Time.fixedDeltaTime;
+	public float MaxSlowFallSpeed => maxSlowFallSpeed + Gravity * Time.fixedDeltaTime;
 
 }
