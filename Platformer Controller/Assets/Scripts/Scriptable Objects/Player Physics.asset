@@ -18,7 +18,7 @@ MonoBehaviour:
   runningJumpHeight: 5.5
   standingJumpHeight: 4.2
   runningJumpDistance: 8
-  coyoteFrames: 5
+  coyoteFrames: 3
   timeToReachMaxSpeedAir: 0.25
   fastFallGravityScale: 2
   maxFallSpeed: 18
