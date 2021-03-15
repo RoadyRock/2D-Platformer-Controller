@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
 
 	void GroundCheck()
 	{
-		isGrounded = Physics2D.OverlapBox(rb.position - Vector2.up * .01f, bc.size - Vector2.right * .01f, 0f, groundMask);
+		isGrounded = Physics2D.OverlapBox(rb.position - Vector2.up * .01f, bc.size - Vector2.right * .01f, 0f, groundMask); // TODO: make this line readable
 	}
 
 	void MovePlayer()
@@ -64,7 +64,14 @@ public class Player : MonoBehaviour
 			jumpQueued = false;
 			if (isGrounded)
 			{
-				float extraJump = (Mathf.Abs(currentVelocity.x) / playerPhysics.MaxSpeed) * playerPhysics.JumpVelocityRange;
+				float extraJump;
+				float speedPercentage = Mathf.Abs(currentVelocity.x) / playerPhysics.MaxSpeed;
+
+				if (speedPercentage <= 1f)
+					extraJump = speedPercentage * playerPhysics.JumpVelocityRange;
+				else
+					extraJump = playerPhysics.JumpVelocityRange;
+
 				currentVelocity.y = playerPhysics.MinJumpVelocity + extraJump;
 			}
 		}
