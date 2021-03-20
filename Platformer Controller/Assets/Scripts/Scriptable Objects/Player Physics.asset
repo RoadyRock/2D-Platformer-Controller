@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc3e686012faea942bc8610afaa77734, type: 3}
   m_Name: Player Physics
   m_EditorClassIdentifier: 
-  maxSpeed: 8
-  timeToReachMaxSpeed: 0.25
-  timeToStop: 0.25
-  runningJumpHeight: 5.5
+  maxSpeed: 10
+  timeToReachMaxSpeed: 0.3
+  timeToStop: 0.3
+  runningJumpHeight: 6
   standingJumpHeight: 4.2
-  runningJumpDistance: 8
+  runningJumpDistance: 10
   coyoteFrames: 3
   timeToReachMaxSpeedAir: 0.25
   fastFallGravityScale: 2
